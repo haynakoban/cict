@@ -13,16 +13,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $roleId = 2;
-
-        $faculty = DB::table('users')
-                ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
-                ->where('user_roles.role_id', 2)
-                ->get();
-
-        $attendanceChecker = UserRole::where('role_id', 3)->with('user')->paginate(10);
-
-        return view('admin.index', compact('faculty', 'attendanceChecker'));
+        return view('welcome');
     }
 
     public function create()

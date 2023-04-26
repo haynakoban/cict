@@ -1,8 +1,12 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KeyController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AttendanceCheckerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +27,10 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('/admin',                    'index')->name('index'); // show all faculties and attendance checkers
     Route::get('/admin/register',           'create')->name('admin.create'); // show register form
     Route::get('/admin/login',              'login')->name('admin.login'); // show login form
+    Route::get('/attendances',              'attendances')->name('admin.attendances'); // show all faculties, rooms and attendances
+    Route::get('/attendance/{id}',          'attendance')->name('admin.attendance'); // show individual faculties, rooms and attendances
+    Route::get('/key/history',              'history')->name('admin.history'); // show key history
+    
     Route::post('/admin',                   'register')->name('admin.register'); // create new admin
     Route::post('/admin/authenticate',      'authenticate')->name('admin.authenticate'); // admin log in
     Route::post('/admin/logout',            'logout')->name('admin.logout'); // admin log out
@@ -37,4 +45,13 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/logout',                  'logout')->name('logout'); // user log out
 });
 
+Route::controller(FacultyController::class)->group(function () {
+    Route::get('/faculty/attendances',      'index')->name('index'); // show all faculties, rooms and attendances for the logged in user
+    Route::get('/faculty/attendance/{id}',  'show')->name('show'); // show individual faculties, rooms and attendances
+});
 
+Route::controller(AttendanceCheckerController::class)->group(function () {
+    Route::get('/checker/attendances',      'index')->name('index'); // show all faculties, rooms and attendances for the logged in user
+    Route::get('/checker/attendance/{id}',  'show')->name('show'); // show individual faculties, rooms and attendances
+    Route::post('/checker/update/{id}',  'update')->name('update'); // show individual faculties, rooms and attendances
+});

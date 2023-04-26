@@ -17,14 +17,19 @@
     </head>
     <body class="antialiased">
         {{-- @dd(auth('web')->user()) --}}
-        <form action="/admin/logout" method="POST"> 
-            @csrf
-            <button type="submit">Sign out</a>
-        </form>
+        @auth
+            <form action="/admin/logout" method="POST"> 
+                @csrf
+                <button type="submit">Sign out</a>
+            </form>
 
-        <form action="/logout" method="POST"> 
-            @csrf
-            <button type="submit">Log out</a>
-        </form>
+            <form action="/logout" method="POST"> 
+                @csrf
+                <button type="submit">Log out</a>
+            </form>
+        @else
+            <div>WELCOME</div>
+        @endauth
+
     </body>
 </html>

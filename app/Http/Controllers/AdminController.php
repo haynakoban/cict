@@ -83,4 +83,43 @@ class AdminController extends Controller
 
         return redirect('/admin/login')->with('message', 'You have been logged out');
     }
+
+    public function attendances()
+    {
+        $attendances = DB::table('attendances')
+            ->join('rooms', 'rooms.id', '=', 'attendances.room_id')
+            ->join('users', 'users.id',  '=', 'attendances.user_id')
+            ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
+            ->select('attendances.status as attendance_status', 'attendances.id as attendance_id', 'attendances.*' , 'rooms.*', 'users.*', 'user_roles.*')
+            ->where('user_roles.role_id', 2)
+            ->orderBy('attendances.created_at', 'desc')
+            ->paginate(10);
+
+        return view('admin.attendances', compact('attendances'));
+    }
+
+    public function attendance($id)
+    {
+        $attendance = DB::table('attendances')
+            ->join('rooms', 'rooms.id', '=', 'attendances.room_id')
+            ->join('users', 'users.id',  '=', 'attendances.user_id')
+            ->select('attendances.status as attendance_status', 'attendances.id as attendance_id', 'attendances.*' , 'rooms.name', 'users.first_name', 'users.last_name')
+            ->where('attendances.id', $id)
+            ->first();
+
+        return view('admin.attendance', compact('attendance'));
+    }
+
+    public function history()
+    {
+        $histories = DB::table('keys')
+            ->join('rooms', 'rooms.id', '=', 'keys.room_id')
+            ->join('users', 'users.id',  '=', 'keys.user_id')
+            ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
+            ->select('keys.status as key_status', 'keys.id as key_id', 'keys.*' , 'rooms.name', 'users.first_name', 'users.last_name', 'user_roles.*')
+            ->where('user_roles.role_id', 2)
+            ->paginate(10);
+
+        dd($histories);
+    }
 }
