@@ -116,7 +116,7 @@ class AdminController extends Controller
             ->join('rooms', 'rooms.id', '=', 'keys.room_id')
             ->join('users', 'users.id',  '=', 'keys.user_id')
             ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
-            ->select('keys.status as key_status', 'keys.id as key_id', 'keys.*' , 'rooms.name', 'users.first_name', 'users.last_name', 'user_roles.*')
+            ->select('keys.id as key_id', 'keys.*' , 'rooms.name', 'users.first_name', 'users.last_name', 'user_roles.*')
             ->where('user_roles.role_id', 2)
             ->paginate(10);
 
