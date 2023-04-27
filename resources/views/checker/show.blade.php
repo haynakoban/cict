@@ -1,5 +1,6 @@
-<form action="/checker/update/{{ $attendance->id }}" method="POST">
+<form action="/checker/attendances/{{ $attendance->id }}" method="POST">
     @csrf
+    @method('PUT')
     <div>{{ $attendance->name }}</div>
     <br>
     <div>{{ $attendance->first_name . " " . $attendance->last_name  }}</div>
