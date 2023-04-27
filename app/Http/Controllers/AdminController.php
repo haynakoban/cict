@@ -91,7 +91,7 @@ class AdminController extends Controller
             ->join('users', 'users.id',  '=', 'attendances.user_id')
             ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
             ->select('attendances.status as attendance_status', 'attendances.id as attendance_id', 'attendances.*' , 'rooms.*', 'users.*', 'user_roles.*')
-            ->where('user_roles.role_id', 2)
+            ->where('user_roles.role_id', 2) // change the role id here
             ->orderBy('attendances.created_at', 'desc')
             ->paginate(10);
 
@@ -116,10 +116,10 @@ class AdminController extends Controller
             ->join('rooms', 'rooms.id', '=', 'keys.room_id')
             ->join('users', 'users.id',  '=', 'keys.user_id')
             ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
-            ->select('keys.id as key_id', 'keys.*' , 'rooms.name', 'users.first_name', 'users.last_name', 'user_roles.*')
+            ->select('keys.id as key_id', 'keys.status as key_status', 'keys.*' , 'rooms.name', 'users.first_name', 'users.last_name', 'user_roles.*')
             ->where('user_roles.role_id', 2)
             ->paginate(10);
 
-        dd($histories);
+        return view('admin.history', compact('histories'));
     }
 }

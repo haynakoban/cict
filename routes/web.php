@@ -28,8 +28,8 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('/admin/register',               'create')->name('admin.create'); // show register form
     Route::get('/admin/login',                  'login')->name('admin.login'); // show login form
     Route::get('/attendances',                  'attendances')->name('admin.attendances'); // show all faculties, rooms and attendances
-    Route::get('/attendance/{id}',              'attendance')->name('admin.attendance'); // show individual faculties, rooms and attendances
-    Route::get('/key/history',                  'history')->name('admin.history'); // show key history
+    Route::get('/attendances/{id}',              'attendance')->name('admin.attendance'); // show individual faculties, rooms and attendances
+    Route::get('/keys/history',                  'history')->name('admin.history'); // show key history
 
     Route::post('/admin',                       'register')->name('admin.register'); // create new admin
     Route::post('/admin/authenticate',          'authenticate')->name('admin.authenticate'); // admin log in

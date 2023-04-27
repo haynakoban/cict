@@ -22,6 +22,7 @@ class KeyFactory extends Factory
             'user_id' => User::factory(),
             'room_id' => Room::factory(),
             'time' => $this->faker->time(),
+            'status' => $this->faker->randomElement(['Borrowed', 'Returned']),
         ];
     }
 }
