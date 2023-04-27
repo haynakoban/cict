@@ -74,7 +74,7 @@ class UserController extends Controller
         if (Auth::guard('web')->attempt($formFields)) {
             $request->session()->regenerate();
             $user = User::where('id', auth('web')->user()->id)->first();
-            $user->status = 1;
+            $user->status = 'online';
             $user->save();
 
             return redirect('/')->with('message', 'You are now logged in!');
@@ -87,7 +87,7 @@ class UserController extends Controller
     {
         $user = User::where('id', auth('web')->user()->id)->first();
         $user->last_login = now();
-        $user->status = 0;
+        $user->status = 'offline';
         $user->save();
 
         auth('web')->logout();

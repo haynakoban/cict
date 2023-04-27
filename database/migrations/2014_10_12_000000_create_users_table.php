@@ -26,7 +26,7 @@ return new class extends Migration
             $table->integer('age');
             $table->text('address');
             $table->time('last_login')->nullable();
-            $table->integer('status')->default(0);
+            $table->string('status')->default('offline');
             $table->timestamps();
         });
     }

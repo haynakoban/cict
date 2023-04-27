@@ -15,25 +15,31 @@ class AdminController extends Controller
 {
     public function index()
     {
+        $keyword = request('keyword');
+
         $faculties = DB::table('users')
                     ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
                     ->where('user_roles.role_id', 2)
-                    ->where('users.first_name', 'like', '%' . request('keyword') . '%')
-                    ->orWhere('users.last_name', 'like', '%' . request('keyword') . '%')
-                    ->orWhere('users.username', 'like', '%' . request('keyword') . '%')
-                    ->orWhere('users.email', 'like', '%' . request('keyword') . '%')
-                    ->paginate(10);
+                    ->when($keyword, function ($query, $keyword) {
+                        return $query->where('users.first_name', 'like', '%' . $keyword . '%')
+                            ->orWhere('users.last_name', 'like', '%' . $keyword . '%')
+                            ->orWhere('users.username', 'like', '%' . $keyword . '%')
+                            ->orWhere('users.email', 'like', '%' . $keyword . '%')
+                            ->orWhere('users.status', 'like', '%' . $keyword . '%');
+                    })->paginate(10);
 
         $attendanceCheckers = DB::table('users')
                     ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
                     ->where('user_roles.role_id', 3)
-                    ->where('users.first_name', 'like', '%' . request('keyword') . '%')
-                    ->orWhere('users.last_name', 'like', '%' . request('keyword') . '%')
-                    ->orWhere('users.username', 'like', '%' . request('keyword') . '%')
-                    ->orWhere('users.email', 'like', '%' . request('keyword') . '%')
-                    ->paginate(10);
+                    ->when($keyword, function ($query, $keyword) {
+                        return $query->where('users.first_name', 'like', '%' . $keyword . '%')
+                            ->orWhere('users.last_name', 'like', '%' . $keyword . '%')
+                            ->orWhere('users.username', 'like', '%' . $keyword . '%')
+                            ->orWhere('users.email', 'like', '%' . $keyword . '%')
+                            ->orWhere('users.status', 'like', '%' . $keyword . '%');
+                    })->paginate(10);
 
-        return view('admin.index', compact('faculties', 'attendanceCheckers'));
+        return view('admin.index', compact('faculties', 'attendanceCheckers', 'keyword'));
     }
 
     public function create()
@@ -122,11 +128,9 @@ class AdminController extends Controller
                 ->orWhere('users.first_name', 'like', '%' . $keyword . '%')
                 ->orWhere('users.last_name', 'like', '%' . $keyword . '%')
                 ->orWhere('schedules.status', 'like', '%' . $keyword . '%');
-            })
-            ->when($semester_keyword, function ($query, $semester_keyword) {
+            })->when($semester_keyword, function ($query, $semester_keyword) {
                 return $query->where('schedules.semester', 'like', '%' . $semester_keyword . '%');
-            })
-            ->orderBy('schedules.created_at', 'desc')
+            })->orderBy('schedules.created_at', 'desc')
             ->paginate(10);
 
         return view('admin.attendances', compact('attendances', 'keyword', 'semester_keyword'));
