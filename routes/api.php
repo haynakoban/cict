@@ -23,3 +23,22 @@ Route::get('/admin', [AdminController::class, 'index'])->name('admin.index'); //
 Route::get('/admin/schedules', [AdminController::class, 'indexSchedule'])->name('admin.createSchedule'); // show all schedule
 Route::get('/admin/keys', [AdminController::class, 'keys'])->name('admin.keys'); // show all rooms/keys available
 Route::get('/admin/keys/history', [AdminController::class, 'history'])->name('admin.history'); // show key history
+
+// Route::group(['prefix' => 'admin', 'namespace' => 'App\Http\Controllers\AdminController'], function () {
+//     Route::get('/',                     'index')->name('index'); // show all faculties and attendance checkers
+//     Route::post('/',                    'register')->name('admin.register'); // create new admin
+//     Route::get('/register',             'create')->name('admin.create'); // show register form
+//     Route::get('/login',                'login')->name('admin.login'); // show login form
+//     Route::post('/authenticate',        'authenticate')->name('admin.authenticate'); // admin log in
+//     Route::post('/logout',              'logout')->name('admin.logout'); // admin log out
+
+//     Route::get('/keys',                 'keys')->name('admin.keys'); // show all rooms/keys available
+//     Route::post('/keys',                'createKey')->name('admin.createKey'); // show all rooms/keys available
+//     Route::get('/keys/history',         'history')->name('admin.history'); // show key history
+//     Route::get('/keys/{id}',            'key')->name('admin.key'); // show room/key details
+    
+//     Route::get('/schedules',            'indexSchedule')->name('admin.createSchedule'); // show all schedule
+//     Route::get('/schedules/create',     'createSchedule')->name('admin.createSchedule'); // show schedule form
+//     Route::post('/schedules',           'storeSchedule')->name('admin.storeSchedule'); // create new schedule
+//     Route::get('/schedules/{id}',       'showSchedule')->name('admin.showSchedule'); // show single schedule
+// });

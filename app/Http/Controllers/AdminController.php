@@ -162,11 +162,19 @@ class AdminController extends Controller
                         return $query->where('rooms.name', 'like', '%' . $keyword . '%')
                             ->orWhere('rooms.status', 'like', '%' . $keyword . '%');
                     })->get();
+        
+        $users = DB::table('users')
+                    ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
+                    ->select('users.id as user_id', 'users.first_name', 'users.last_name', 'user_roles.*')
+                    ->where('user_roles.role_id', 2) // select faculty only
+                    ->get();
+
 
         // return view('admin.keys', compact('rooms', 'keyword'));
         return [
             'rooms' => $rooms,
-            'keyword' => $keyword
+            'keyword' => $keyword,
+            'users' => $users
         ];
     }
 
@@ -180,7 +188,11 @@ class AdminController extends Controller
                     ->where('user_roles.role_id', 2) // select faculty only
                     ->get();
 
-        return view('admin.key', compact('room', 'users'));
+        // return view('admin.key', compact('room', 'users'));
+        return [
+            'rooms' => $room,
+            'users' => $users
+        ];
     }
 
     public function createKey(Request $request)
