@@ -9,6 +9,13 @@ class Key extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'room_id',
+        'user_id',
+        'time',
+        'status' 
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

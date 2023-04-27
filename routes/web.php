@@ -29,7 +29,9 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('/admin/login',                  'login')->name('admin.login'); // show login form
     Route::get('/admin/attendances',                  'attendances')->name('admin.attendances'); // show all faculties, rooms and attendances
     Route::get('/admin/attendances/{id}',             'attendance')->name('admin.attendance'); // show individual faculties, rooms and attendances
-    Route::get('/admin/keys',                         'keys')->name('admin.keys'); // show key history
+    Route::get('/admin/keys',                         'keys')->name('admin.keys'); // show all rooms/keys available
+    Route::post('/admin/keys',                         'createKey')->name('admin.createKey'); // show all rooms/keys available
+    Route::get('/admin/keys/{id}',                         'key')->name('admin.key'); // show room/key details
     Route::get('/admin/keys/history',                 'history')->name('admin.history'); // show key history
     Route::get('/admin/schedules',                 'indexSchedule')->name('admin.createSchedule'); // show all schedule
     Route::get('/admin/schedules/create',                 'createSchedule')->name('admin.createSchedule'); // show schedule form

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Key;
 use App\Models\Room;
 use App\Models\Schedule;
 use App\Models\User;
@@ -129,6 +130,37 @@ class AdminController extends Controller
         $rooms = Room::paginate(10);
 
         return view('admin.keys', compact('rooms'));
+    }
+
+    public function key($id)
+    {
+        $room = Room::where('id', $id)->first();
+
+        $users = DB::table('users')
+                    ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
+                    ->select('users.id as user_id', 'users.first_name', 'users.last_name', 'user_roles.*')
+                    ->where('user_roles.role_id', 2) // select faculty only
+                    ->get();
+
+        return view('admin.key', compact('room', 'users'));
+    }
+
+    public function createKey(Request $request)
+    {
+        $room = Room::where('id', $request->room_id)->first();
+
+        $room->status = $request->room_status == 'available' ? 'borrowed' : 'available';
+        $room->save();
+
+        Key::create([
+            'room_id' => $request->room_id,
+            'user_id' => $request->user_id,
+            'time' => now(),
+            'status' => $request->room_status == 'available' ? 'Borrowed' : 'Returned',
+        ]);
+
+        return redirect('/admin/keys');
+        
     }
 
     public function indexSchedule()
