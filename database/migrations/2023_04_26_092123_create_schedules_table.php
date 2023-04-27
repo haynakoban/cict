@@ -18,11 +18,11 @@ return new class extends Migration
             $table->string('subject_name');
             $table->string('section_name');
             $table->string('group');
-            $table->string('status'); // Present, Absent, Not Visited
+            $table->string('status')->nullable(); // Present, Absent, Not Visited
             $table->string('semester');
             $table->string('day');
-            $table->time('start_time');
-            $table->time('end_time');
+            $table->string('start_time');
+            $table->string('end_time');
             $table->timestamps();
         });
     }

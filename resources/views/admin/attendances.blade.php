@@ -6,7 +6,7 @@
     <li>{{ $attendance->created_at }}</li>
     <li>{{ $attendance->time }}</li>
     <li>{{ $attendance->attendance_status }}</li>
-    <li><a href="/attendances/{{ $attendance->attendance_id }}">Comment</a></li>
+    <li><a href="/admin/attendances/{{ $attendance->attendance_id }}">Comment</a></li>
     <hr>
 @endforeach
 

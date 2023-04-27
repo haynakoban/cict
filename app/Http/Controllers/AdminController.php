@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use App\Models\Room;
+use App\Models\Schedule;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -127,5 +129,50 @@ class AdminController extends Controller
         $rooms = Room::paginate(10);
 
         return view('admin.keys', compact('rooms'));
+    }
+
+    public function indexSchedule()
+    {
+        $schedules = DB::table('schedules')
+                ->join('rooms', 'rooms.id', '=', 'schedules.room_id')
+                ->join('users', 'users.id',  '=', 'schedules.user_id')
+                ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
+                ->select('schedules.status as schedule_status', 'schedules.id as schedule_id', 'schedules.*' , 'rooms.*', 'users.*', 'user_roles.*')
+                ->where('user_roles.role_id', 2)
+                ->orderBy('schedules.created_at', 'desc')
+                ->paginate(10);
+
+        return view('admin.schedules', compact('schedules'));
+    }
+
+    public function createSchedule()
+    {
+        $rooms = Room::all();
+        $users = DB::table('users')
+                    ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
+                    ->select('users.id as user_id', 'users.first_name', 'users.last_name', 'user_roles.*')
+                    ->where('user_roles.role_id', 2) // select faculty only
+                    ->get();
+
+        return view('admin.createSchedule', compact('rooms', 'users'));
+    }
+
+    public function storeSchedule(Request $request)
+    {
+        $formFields = $request->validate([
+            'subject_name' => ['required'],
+            'section_name' => ['required'],
+            'user_id' => ['required'],
+            'room_id' => ['required'],
+            'group' => ['required'],
+            'day' => ['required'],
+            'start_time' => ['required'],
+            'end_time' => ['required'],
+            'semester' => ['required'],
+        ]);
+
+        Schedule::create($formFields);  
+
+        return redirect('/admin/schedules');
     }
 }
