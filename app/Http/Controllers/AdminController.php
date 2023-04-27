@@ -95,16 +95,41 @@ class AdminController extends Controller
 
     public function attendances()
     {
-        $attendances = DB::table('attendances')
-            ->join('rooms', 'rooms.id', '=', 'attendances.room_id')
-            ->join('users', 'users.id',  '=', 'attendances.user_id')
+        $keyword = request('keyword');
+        $semester_keyword = request('semester');
+
+        // $attendances = DB::table('attendances')
+        //     ->join('rooms', 'rooms.id', '=', 'attendances.room_id')
+        //     ->join('users', 'users.id',  '=', 'attendances.user_id')
+        //     ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
+        //     ->select('attendances.status as attendance_status', 'attendances.id as attendance_id', 'attendances.*' , 'rooms.*', 'users.*', 'user_roles.*')
+        //     ->where('user_roles.role_id', 2) // change the role id here
+        //     ->where(['rooms.name', 'like', '%' . $keyword . '%', ])
+        //     ->orWhere('users.first_name', 'like', '%' . $keyword . '%')
+        //     ->orWhere('users.last_name', 'like', '%' . $keyword . '%')
+        //     ->orWhere('attendances.status', 'like', '%' . $keyword . '%')
+        //     ->orderBy('attendances.created_at', 'desc')
+        //     ->paginate(10);
+
+        $attendances = DB::table('schedules')
+            ->join('rooms', 'rooms.id', '=', 'schedules.room_id')
+            ->join('users', 'users.id',  '=', 'schedules.user_id')
             ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
-            ->select('attendances.status as attendance_status', 'attendances.id as attendance_id', 'attendances.*' , 'rooms.*', 'users.*', 'user_roles.*')
+            ->select('schedules.status as schedule_status', 'schedules.id as schedule_id', 'schedules.*' , 'rooms.*', 'users.*', 'user_roles.*')
             ->where('user_roles.role_id', 2) // change the role id here
-            ->orderBy('attendances.created_at', 'desc')
+            ->when($keyword, function ($query, $keyword) {
+                return $query->where('rooms.name', 'like', '%' . $keyword . '%')
+                ->orWhere('users.first_name', 'like', '%' . $keyword . '%')
+                ->orWhere('users.last_name', 'like', '%' . $keyword . '%')
+                ->orWhere('schedules.status', 'like', '%' . $keyword . '%');
+            })
+            ->when($semester_keyword, function ($query, $semester_keyword) {
+                return $query->where('schedules.semester', 'like', '%' . $semester_keyword . '%');
+            })
+            ->orderBy('schedules.created_at', 'desc')
             ->paginate(10);
 
-        return view('admin.attendances', compact('attendances'));
+        return view('admin.attendances', compact('attendances', 'keyword', 'semester_keyword'));
     }
 
     public function attendance($id)
