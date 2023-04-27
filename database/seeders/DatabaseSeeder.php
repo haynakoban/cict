@@ -47,12 +47,6 @@ class DatabaseSeeder extends Seeder
         foreach ($faculties as $faculty) {
             $randomRoom = $roomsCollection->random();
 
-            Attendance::factory()
-                ->create([
-                    'user_id' => $faculty->user_id, 
-                    'room_id' => $randomRoom ,
-                ]);
-
             Key::factory()
                 ->create([
                     'user_id' => $faculty->user_id, 

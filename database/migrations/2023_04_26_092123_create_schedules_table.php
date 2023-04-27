@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('day');
             $table->string('start_time');
             $table->string('end_time');
+            $table->longText('comments')->nullable();
             $table->timestamps();
         });
     }

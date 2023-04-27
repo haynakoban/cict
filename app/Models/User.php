@@ -34,11 +34,6 @@ class User extends Authenticatable
 
     protected $table = 'users';
 
-    public function attendances()
-    {
-        return $this->hasMany(Attendance::class);
-    }
-
     public function keys()
     {
         return $this->hasMany(Key::class);
