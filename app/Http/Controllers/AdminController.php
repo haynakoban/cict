@@ -148,9 +148,10 @@ class AdminController extends Controller
             ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
             ->select('keys.id as key_id', 'keys.status as key_status', 'keys.*' , 'rooms.name', 'users.first_name', 'users.last_name', 'user_roles.*')
             ->where('user_roles.role_id', 2)
-            ->paginate(10);
+            ->get();
 
-        return view('admin.history', compact('histories'));
+        // return view('admin.history', compact('histories'));
+        return $histories;
     }
 
     public function keys()
@@ -160,9 +161,13 @@ class AdminController extends Controller
                     ->when($keyword, function ($query, $keyword) {
                         return $query->where('rooms.name', 'like', '%' . $keyword . '%')
                             ->orWhere('rooms.status', 'like', '%' . $keyword . '%');
-                    })->paginate(10);
+                    })->get();
 
-        return view('admin.keys', compact('rooms', 'keyword'));
+        // return view('admin.keys', compact('rooms', 'keyword'));
+        return [
+            'rooms' => $rooms,
+            'keyword' => $keyword
+        ];
     }
 
     public function key($id)

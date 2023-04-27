@@ -21,3 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.index'); // show all faculties and attendance checkers
 Route::get('/admin/schedules', [AdminController::class, 'indexSchedule'])->name('admin.createSchedule'); // show all schedule
+Route::get('/admin/keys', [AdminController::class, 'keys'])->name('admin.keys'); // show all rooms/keys available
+Route::get('/admin/keys/history', [AdminController::class, 'history'])->name('admin.history'); // show key history
