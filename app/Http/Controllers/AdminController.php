@@ -209,7 +209,7 @@ class AdminController extends Controller
             'status' => $request->room_status == 'available' ? 'Borrowed' : 'Returned',
         ]);
 
-        return redirect('/admin/keys');  
+        return response()->json(['message' => 'new key created']);  
 
     }
 

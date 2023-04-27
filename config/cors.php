@@ -31,4 +31,6 @@ return [
 
     'supports_credentials' => false,
 
+    'allowedOrigins' => ['http://localhost:4200'],
+
 ];
