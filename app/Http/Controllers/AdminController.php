@@ -163,9 +163,14 @@ class AdminController extends Controller
 
     public function keys()
     {
-        $rooms = Room::paginate(10);
+        $keyword = request('keyword');
+        $rooms = DB::table('rooms')
+                    ->when($keyword, function ($query, $keyword) {
+                        return $query->where('rooms.name', 'like', '%' . $keyword . '%')
+                            ->orWhere('rooms.status', 'like', '%' . $keyword . '%');
+                    })->paginate(10);
 
-        return view('admin.keys', compact('rooms'));
+        return view('admin.keys', compact('rooms', 'keyword'));
     }
 
     public function key($id)

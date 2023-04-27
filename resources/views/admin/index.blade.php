@@ -1,6 +1,6 @@
 <form action="/admin" method="GET">
     @csrf
-    <input type="text" name="keyword" placeholder="search">
+    <input type="text" name="keyword" placeholder="search" value="{{ $keyword ?? $keyword  }}">
     <button type="submit">search</button>
 </form>
 

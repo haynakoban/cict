@@ -1,3 +1,8 @@
+<form action="/admin/keys" method="GET">
+    @csrf
+    <input type="text" name="keyword" placeholder="search" value="{{ $keyword ?? $keyword  }}">
+    <button type="submit">search</button>
+</form>
 
 @foreach ($rooms as $room)
     <li>{{ $room->name }}</li>
