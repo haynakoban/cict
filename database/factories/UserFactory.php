@@ -24,7 +24,7 @@ class UserFactory extends Factory
             'last_name' => $this->faker->lastName(),
             'username' => $this->faker->userName(),
             'email' => $this->faker->safeEmail(),
-            'password' => 'test123',
+            'password' => bcrypt('test123'),
             'position' => $this->faker->jobTitle(),
             'course_program' => $this->faker->randomElement(['BSIT', 'MIT', 'BSCS', 'BSIS']),
             'dob' => $this->faker->randomElement(['January 24, 1987', 'January 24, 1987', 'January 24, 1987', 'January 24, 1987']),

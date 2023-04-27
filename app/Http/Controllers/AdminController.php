@@ -6,7 +6,6 @@ use App\Models\Admin;
 use App\Models\Key;
 use App\Models\Room;
 use App\Models\Schedule;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,11 +18,19 @@ class AdminController extends Controller
         $faculties = DB::table('users')
                     ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
                     ->where('user_roles.role_id', 2)
+                    ->where('users.first_name', 'like', '%' . request('keyword') . '%')
+                    ->orWhere('users.last_name', 'like', '%' . request('keyword') . '%')
+                    ->orWhere('users.username', 'like', '%' . request('keyword') . '%')
+                    ->orWhere('users.email', 'like', '%' . request('keyword') . '%')
                     ->paginate(10);
 
         $attendanceCheckers = DB::table('users')
                     ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
                     ->where('user_roles.role_id', 3)
+                    ->where('users.first_name', 'like', '%' . request('keyword') . '%')
+                    ->orWhere('users.last_name', 'like', '%' . request('keyword') . '%')
+                    ->orWhere('users.username', 'like', '%' . request('keyword') . '%')
+                    ->orWhere('users.email', 'like', '%' . request('keyword') . '%')
                     ->paginate(10);
 
         return view('admin.index', compact('faculties', 'attendanceCheckers'));
