@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
-use App\Models\User;
-use App\Models\UserRole;
+use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -121,5 +120,12 @@ class AdminController extends Controller
             ->paginate(10);
 
         return view('admin.history', compact('histories'));
+    }
+
+    public function keys()
+    {
+        $rooms = Room::paginate(10);
+
+        return view('admin.keys', compact('rooms'));
     }
 }
