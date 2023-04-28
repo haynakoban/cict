@@ -162,7 +162,26 @@ class AdminController extends Controller
                         return $query->where('rooms.name', 'like', '%' . $keyword . '%')
                             ->orWhere('rooms.status', 'like', '%' . $keyword . '%');
                     })->get();
-        
+                    
+        $rooms_keys = DB::table('rooms')
+                    ->where('status', 'borrowed')
+                    ->get()
+                    ->pluck('id')
+                    ->toArray();
+
+        $keys_id = DB::table('keys')
+                ->whereIn('room_id', $rooms_keys)
+                ->select(DB::raw('MAX(id) AS id'))
+                ->groupBy('room_id')
+                ->get()
+                ->pluck('id')
+                ->toArray();
+
+        $keys = DB::table('keys')
+                ->join('users', 'users.id', '=', 'keys.user_id')
+                ->whereIn('keys.id', $keys_id)
+                ->get();
+
         $users = DB::table('users')
                     ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
                     ->select('users.id as user_id', 'users.first_name', 'users.last_name', 'user_roles.*')
@@ -174,7 +193,8 @@ class AdminController extends Controller
         return [
             'rooms' => $rooms,
             'keyword' => $keyword,
-            'users' => $users
+            'users' => $users,
+            'keys' => $keys,
         ];
     }
 
@@ -237,7 +257,7 @@ class AdminController extends Controller
             ->join('rooms', 'rooms.id', '=', 'schedules.room_id')
             ->join('users', 'users.id',  '=', 'schedules.user_id')
             ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
-            ->select('schedules.status as schedule_status', 'schedules.id as schedule_id', 'schedules.*' , 'rooms.*', 'users.*', 'user_roles.*')
+            ->select('schedules.status as schedule_status', 'schedules.id as schedule_id', 'schedules.*' , 'rooms.status as room_status', 'rooms.*', 'users.*', 'user_roles.*')
             ->where('user_roles.role_id', 2) // change the role id here
             ->orderBy('schedules.created_at', 'desc')
             ->get();
