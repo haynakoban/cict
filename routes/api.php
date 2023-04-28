@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Route::post('/admin/keys',[AdminController::class, 'createKey'])->name('admin.createKey'); // create new key
 // Route::get('/admin/keys/history', [AdminController::class, 'history'])->name('admin.history'); // show key history
 
+Route::controller(UserController::class)->group(function () {
+    Route::get('/',                             'index')->name('index'); // show all faculties and attendance checkers
+    Route::get('/register',                     'create')->name('create'); // show register form
+    Route::get('/login',                        'login')->name('login'); // show login form
+    Route::post('/',                            'register')->name('register'); // create new user
+    Route::post('/authenticate',                'authenticate')->name('authenticate'); // user log in
+    Route::post('/logout',                      'logout')->name('logout'); // user log out
+});
+
 Route::controller(AdminController::class)->group(function () {
     Route::get('/admin',                                'index')->name('index'); // show all faculties and attendance checkers
     Route::get('/admin/keys',                           'keys')->name('admin.keys'); // show all rooms/keys available
@@ -44,14 +54,7 @@ Route::controller(AdminController::class)->group(function () {
     Route::post('/admin/logout',                        'logout')->name('admin.logout'); // admin log out
 }); 
 
-Route::controller(UserController::class)->group(function () {
-    Route::get('/',                             'index')->name('index'); // show all faculties and attendance checkers
-    Route::get('/register',                     'create')->name('create'); // show register form
-    Route::get('/login',                        'login')->name('login'); // show login form
-    Route::post('/',                            'register')->name('register'); // create new user
-    Route::post('/authenticate',                'authenticate')->name('authenticate'); // user log in
-    Route::post('/logout',                      'logout')->name('logout'); // user log out
-});
+
 
 // Route::controller(FacultyController::class)->group(function () {
 //     Route::get('/faculty/attendances',          'index')->name('index'); // show all faculties, rooms and attendances for the logged in user

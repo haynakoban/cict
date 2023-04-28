@@ -22,9 +22,9 @@ return new class extends Migration
             $table->string('password');
             $table->string('position');
             $table->text('course_program');
-            $table->string('dob'); // alternative $table->date('dob');
-            $table->integer('age');
-            $table->text('address');
+            $table->string('dob')->nullable(); // alternative $table->date('dob');
+            $table->integer('age')->nullable();
+            $table->text('address')->nullable();
             $table->time('last_login')->nullable();
             $table->string('status')->default('offline');
             $table->timestamps();

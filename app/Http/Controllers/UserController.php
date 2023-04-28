@@ -33,9 +33,6 @@ class UserController extends Controller
             'password' => 'required|min:6',
             'position' => ['required'],
             'course_program' => ['required'],
-            'dob' => ['required'],
-            'age' => ['required'],
-            'address' => ['required'],
         ]);
 
          // hash password
@@ -56,7 +53,7 @@ class UserController extends Controller
             ]);
         }
 
-        return redirect('/')->with('message', 'User Created');
+        return response()->json(['message'=> 'success']);
     }
 
     public function login()
