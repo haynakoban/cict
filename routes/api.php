@@ -27,8 +27,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::controller(AdminController::class)->group(function () {
     Route::get('/admin',                                'index')->name('index'); // show all faculties and attendance checkers
-    Route::get('/admin/register',                       'create')->name('admin.create'); // show register form
-    Route::get('/admin/login',                          'login')->name('admin.login'); // show login form
     Route::get('/admin/keys',                           'keys')->name('admin.keys'); // show all rooms/keys available
     Route::post('/admin/keys',                          'createKey')->name('admin.createKey'); // show all rooms/keys available
     Route::get('/admin/keys/history',                   'history')->name('admin.history'); // show key history
@@ -38,8 +36,10 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('/admin/schedules/create',               'createSchedule')->name('admin.createSchedule'); // show schedule form
     Route::post('/admin/schedules',                     'storeSchedule')->name('admin.storeSchedule'); // create new schedule
     Route::get('/admin/schedules/{id}',                 'showSchedule')->name('admin.showSchedule'); // show single schedule
-
+    
     Route::post('/admin',                               'register')->name('admin.register'); // create new admin
+    Route::get('/admin/register',                       'create')->name('admin.create'); // show register form
+    Route::get('/admin/login',                          'login')->name('admin.login'); // show login form
     Route::post('/admin/authenticate',                  'authenticate')->name('admin.authenticate'); // admin log in
     Route::post('/admin/logout',                        'logout')->name('admin.logout'); // admin log out
 }); 
