@@ -291,6 +291,6 @@ class AdminController extends Controller
 
         Schedule::create($formFields);  
 
-        return redirect('/admin/schedules');
+        return response()->json(['message' => 'success']);
     }
 }
