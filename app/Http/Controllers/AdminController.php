@@ -226,7 +226,12 @@ class AdminController extends Controller
             '2025-2026 1st Semester', '2025-2026 2nd Semester',
         );
 
-        $semester_keyword = request('semester_keyword');
+        $users = DB::table('users')
+                ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
+                ->where('user_roles.role_id', 2) // change the role id here
+                ->get();
+
+        $rooms = DB::table('rooms')->get();
 
         $schedules = DB::table('schedules')
             ->join('rooms', 'rooms.id', '=', 'schedules.room_id')
@@ -234,16 +239,15 @@ class AdminController extends Controller
             ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
             ->select('schedules.status as schedule_status', 'schedules.id as schedule_id', 'schedules.*' , 'rooms.*', 'users.*', 'user_roles.*')
             ->where('user_roles.role_id', 2) // change the role id here
-            ->when($semester_keyword, function ($query, $semester_keyword) {
-                return $query->where('schedules.semester', 'like', '%' . $semester_keyword . '%');
-            })->orderBy('schedules.created_at', 'desc')
+            ->orderBy('schedules.created_at', 'desc')
             ->get();
 
         // return view('admin.schedules', compact('schedules', 'keyword', 'semester_keyword'));
         return [
             'schedules' =>  $schedules,
-            'semester_keyword' => $semester_keyword,
-            'semesters' => $semesters
+            'semesters' => $semesters,
+            'users' => $users,
+            'rooms' => $rooms,
         ];
     }
 

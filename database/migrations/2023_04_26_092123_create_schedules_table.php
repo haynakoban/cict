@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('status')->nullable(); // Present, Absent, Not Visited
             $table->string('semester');
             $table->string('day');
-            $table->string('start_time');
-            $table->string('end_time');
+            $table->time('start_time');
+            $table->time('end_time');
             $table->longText('comments')->nullable();
             $table->timestamps();
         });
