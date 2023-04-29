@@ -189,7 +189,7 @@ class AdminController extends Controller
         Key::create([
             'room_id' => $request->room_id,
             'user_id' => $request->user_id,
-            'time' => now(),
+            'time' => now('Asia/Manila'),
             'status' => $request->room_status == 'available' ? 'Borrowed' : 'Returned',
         ]);
 
@@ -247,16 +247,20 @@ class AdminController extends Controller
         return view('admin.showSchedule', compact('schedule'));
     }
 
-    public function createSchedule()
-    {
-        $rooms = Room::all();
-        $users = DB::table('users')
-                    ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
-                    ->select('users.id as user_id', 'users.first_name', 'users.last_name', 'user_roles.*')
-                    ->where('user_roles.role_id', 2) // select faculty only
-                    ->get();
+    public function createSchedule(Request $request)
+    {   
+        $schedule = Schedule::where('id', $request->id)->first();
+        if($request->comments){
+            $schedule->comments = $request->comments;
+        }
 
-        return view('admin.createSchedule', compact('rooms', 'users'));
+        if($request->status){
+            $schedule->status = $request->status;
+        }
+
+        $schedule->save();
+
+        return redirect('http://localhost:4200/checker/schedule-attendance');
     }
 
     public function storeSchedule(Request $request)

@@ -37,7 +37,7 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('/admin/keys/{id}',                      'key')->name('admin.key'); // show room/key details
     
     Route::get('/admin/schedules',                      'indexSchedule')->name('admin.createSchedule'); // show all schedule
-    Route::get('/admin/schedules/create',               'createSchedule')->name('admin.createSchedule'); // show schedule form
+    Route::post('/admin/schedules/create',               'createSchedule')->name('admin.createSchedule'); // show schedule form
     Route::post('/admin/schedules',                     'storeSchedule')->name('admin.storeSchedule'); // create new schedule
     Route::get('/admin/schedules/{id}',                 'showSchedule')->name('admin.showSchedule'); // show single schedule
     

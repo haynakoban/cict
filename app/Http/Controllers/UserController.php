@@ -83,7 +83,7 @@ class UserController extends Controller
     public function logout(Request $request)
     {
         $user = User::where('id', auth('web')->user()->id)->first();
-        $user->last_login = now();
+        $user->last_login = now('Asia/Manila');
         $user->status = 'offline';
         $user->save();
 
