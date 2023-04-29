@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
 use App\Models\Key;
 use App\Models\Room;
+use App\Models\User;
+use App\Models\Admin;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -73,9 +74,9 @@ class AdminController extends Controller
         return redirect('/')->with('message', 'User Created and Logged in');
     }
 
-    public function login()
+    public function login($id)
     {
-        $user = auth('admin')->user();
+        $user = User::where('id', $id)->first();
         return $user;
     }
 

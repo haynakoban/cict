@@ -43,7 +43,7 @@ Route::controller(AdminController::class)->group(function () {
     
     Route::post('/admin',                               'register')->name('admin.register'); // create new admin
     Route::get('/admin/register',                       'create')->name('admin.create'); // show register form
-    Route::get('/admin/login',                          'login')->name('admin.login'); // show login form
+    Route::get('/admin/login/{id}',                     'login')->name('admin.login'); // show login form
     Route::post('/admin/authenticate',                  'authenticate')->name('admin.authenticate'); // admin log in
     Route::post('/admin/logout',                        'logout')->name('admin.logout'); // admin log out
 }); 
