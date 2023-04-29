@@ -58,7 +58,7 @@ class AdminController extends Controller
             'fullname' => ['required'],
             'username' => ['required', 'min:4', 'max:20', Rule::unique('admins', 'username')],
             'email' => ['required', 'email', Rule::unique('admins', 'email')],
-            'password' => 'required|confirmed|min:6'
+            'password' => 'required|min:6'
         ]);
 
          // hash password
@@ -75,7 +75,8 @@ class AdminController extends Controller
 
     public function login()
     {
-        return view('admin.login');
+        $user = auth('admin')->user();
+        return $user;
     }
 
     public function authenticate(Request $request)
@@ -87,11 +88,13 @@ class AdminController extends Controller
 
         if (Auth::guard('admin')->attempt($formFields)) {
             $request->session()->regenerate();
-
-            return redirect('/')->with('message', 'You are now logged in!');
+            $user = auth('admin')->user();
+            return $user;
         }
 
-        return back()->withErrors(['username' => 'Invalid credentials'])->onlyInput('username');
+        return $user = null;
+
+        // return back()->withErrors(['username' => 'Invalid credentials'])->onlyInput('username');
     }
 
     public function logout(Request $request)
@@ -260,7 +263,7 @@ class AdminController extends Controller
 
         $schedule->save();
 
-        return redirect('http://localhost:4200/checker/schedule-attendance');
+        return response()->json(['message'=> 'schedule created']);
     }
 
     public function storeSchedule(Request $request)
